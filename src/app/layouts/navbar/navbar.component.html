@@ -520,8 +520,8 @@
 
 <div
   id="drawer-right"
-  class="fixed right-0 top-0 z-50 h-screen w-80
-         translate-x-full overflow-y-auto
+  class="fixed right-0 top-0 z-50 h-dvh w-80 max-w-full
+         translate-x-full overflow-x-hidden overflow-y-auto
          bg-white p-6 shadow-2xl transition-transform"
   tabindex="-1"
 >
@@ -532,6 +532,7 @@
 
     <img
       routerLink="/"
+      (click)="closeMobileDrawer()"
       src="https://freshcart.codescandy.com/assets/images/logo/freshcart-logo.svg"
       alt="Logo"
       class="h-7 cursor-pointer"
@@ -587,6 +588,7 @@
       <li>
         <a
           routerLink="/"
+          (click)="closeMobileDrawer()"
           class="block transition-colors hover:text-emerald-600"
         >
           Home
@@ -596,6 +598,7 @@
       <li>
         <a
           routerLink="/shop"
+          (click)="closeMobileDrawer()"
           class="block transition-colors hover:text-emerald-600"
         >
           Shop
@@ -605,15 +608,29 @@
       <li>
         <a
           routerLink="/categories"
+          (click)="closeMobileDrawer()"
           class="block transition-colors hover:text-emerald-600"
         >
-          Categories
+          All Categories
+        </a>
+      </li>
+
+      <li>
+        <a
+          [routerLink]="electronicsCategoryId() ? '/products' : '/categories'"
+          (click)="closeMobileDrawer()"
+          [queryParams]="electronicsCategoryId() ? { category: electronicsCategoryId() } : null"
+          queryParamsHandling="replace"
+          class="block transition-colors hover:text-emerald-600"
+        >
+          Electronics
         </a>
       </li>
 
       <li>
         <a
           routerLink="/brands"
+          (click)="closeMobileDrawer()"
           class="block transition-colors hover:text-emerald-600"
         >
           Brands
@@ -631,6 +648,7 @@
 
     <a
       routerLink="/wishlist"
+      (click)="closeMobileDrawer()"
       class="group flex cursor-pointer
              items-center gap-3
              rounded-xl p-2
@@ -674,6 +692,7 @@
 
     <a
       routerLink="/cart"
+      (click)="closeMobileDrawer()"
       class="group flex cursor-pointer
              items-center gap-3
              rounded-xl p-2
@@ -723,10 +742,40 @@
 
     @if (logged()) {
 
+      <!-- My Profile -->
+
+      <a
+        routerLink="/profile"
+        (click)="closeMobileDrawer()"
+        class="group flex items-center gap-3
+               rounded-xl p-2
+               transition-colors
+               hover:bg-emerald-50"
+      >
+
+        <div
+          class="flex h-11 w-11
+                 items-center justify-center
+                 rounded-full bg-gray-100
+                 text-gray-600
+                 group-hover:bg-emerald-100
+                 group-hover:text-emerald-600"
+        >
+          <i class="far fa-user"></i>
+        </div>
+
+        <span class="font-bold text-gray-700">
+          My Profile
+        </span>
+
+      </a>
+
+
       <!-- My Orders -->
 
       <a
         routerLink="/orders"
+        (click)="closeMobileDrawer()"
         class="group flex items-center gap-3
                rounded-xl p-2
                transition-colors
@@ -751,10 +800,69 @@
       </a>
 
 
+      <!-- My Wishlist -->
+
+      <a
+        routerLink="/wishlist"
+        (click)="closeMobileDrawer()"
+        class="group flex items-center gap-3
+               rounded-xl p-2
+               transition-colors
+               hover:bg-emerald-50"
+      >
+
+        <div
+          class="flex h-11 w-11
+                 items-center justify-center
+                 rounded-full bg-gray-100
+                 text-gray-600
+                 group-hover:bg-emerald-100
+                 group-hover:text-emerald-600"
+        >
+          <i class="far fa-heart"></i>
+        </div>
+
+        <span class="font-bold text-gray-700">
+          My Wishlist
+        </span>
+
+      </a>
+
+
+      <!-- Addresses -->
+
+      <a
+        routerLink="/addresses"
+        (click)="closeMobileDrawer()"
+        class="group flex items-center gap-3
+               rounded-xl p-2
+               transition-colors
+               hover:bg-emerald-50"
+      >
+
+        <div
+          class="flex h-11 w-11
+                 items-center justify-center
+                 rounded-full bg-gray-100
+                 text-gray-600
+                 group-hover:bg-emerald-100
+                 group-hover:text-emerald-600"
+        >
+          <i class="far fa-address-card"></i>
+        </div>
+
+        <span class="font-bold text-gray-700">
+          Addresses
+        </span>
+
+      </a>
+
+
       <!-- Change Password -->
 
       <a
         routerLink="/change-password"
+        (click)="closeMobileDrawer()"
         class="group flex items-center gap-3
                rounded-xl p-2
                transition-colors
@@ -783,7 +891,7 @@
 
       <button
         type="button"
-        (click)="logOut()"
+        (click)="closeMobileDrawer(); logOut()"
         class="group flex w-full
                cursor-pointer items-center
                gap-3 rounded-xl p-2
@@ -812,6 +920,7 @@
 
       <a
         routerLink="/login"
+        (click)="closeMobileDrawer()"
         class="group flex cursor-pointer
                items-center gap-3
                rounded-xl p-2
@@ -841,6 +950,7 @@
 
       <a
         routerLink="/register"
+        (click)="closeMobileDrawer()"
         class="group flex cursor-pointer
                items-center gap-3
                rounded-xl p-2

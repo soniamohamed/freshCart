@@ -17,6 +17,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { FlowbiteService } from './../../core/services/flowbite/flowbite.service';
 import { initFlowbite } from 'flowbite';
+import instances from 'flowbite/lib/esm/dom/instances';
 
 import { AuthService } from '../../core/auth/services/auth.service';
 import { CartService } from '../../core/services/cart/cart.service';
@@ -172,6 +173,17 @@ export class NavbarComponent implements OnInit {
 
   closeProfileMenu(): void {
     this.profileMenuOpen.set(false);
+  }
+
+  closeMobileDrawer(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
+    // Use Flowbite so the backdrop, body scroll lock, and ARIA state are reset.
+    if (instances.instanceExists('Drawer', 'drawer-right')) {
+      instances.getInstance('Drawer', 'drawer-right').hide();
+    }
   }
 
   flowbiteInit(): void {
