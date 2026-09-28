@@ -1,0 +1,21 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MainSliderComponent } from './main-slider.component';
+
+describe('MainSliderComponent', () => {
+  let component: MainSliderComponent;
+  let fixture: ComponentFixture<MainSliderComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [MainSliderComponent],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(MainSliderComponent);
+    component = fixture.componentInstance;
+    await fixture.whenStable();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

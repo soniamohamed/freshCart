@@ -1,0 +1,47 @@
+<section class="container mx-auto px-4 py-10" [attr.aria-busy]="isLoading()">
+  <h1 class="text-3xl font-bold text-gray-900 mb-6">My Wishlist</h1>
+  @if (isLoading()) {
+    <p role="status" class="py-12 text-center text-gray-500">Loading wishlist...</p>
+  } @else if (errorMessage()) {
+    <div role="alert" class="rounded-xl bg-red-50 p-6 text-red-700">
+      <p>{{ errorMessage() }}</p>
+      <button type="button" (click)="getProductsInWishlist()" class="mt-3 underline cursor-pointer">Try again</button>
+    </div>
+  } @else {
+    @if (removeErrorMessage()) {
+      <p role="alert" class="mb-4 rounded-xl bg-red-50 p-4 text-red-700">{{ removeErrorMessage() }}</p>
+    }
+    <p role="status" class="text-gray-500 mb-5">{{ productsList().length }} saved products</p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+      @for (product of productsList(); track product._id) {
+        <article class="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm hover:shadow-md transition-shadow duration-300">
+          <a [routerLink]="['/details', product.slug, product._id]" class="block relative mb-4">
+            <img [src]="product.imageCover" [alt]="product.title" class="w-full aspect-square object-contain" loading="lazy" />
+            @if (product.priceAfterDiscount != null && product.priceAfterDiscount < product.price) {
+              <span class="absolute top-2 left-2 bg-emerald-600 text-white text-xs rounded-lg px-2 py-1">Sale</span>
+            }
+          </a>
+          <p class="text-xs text-gray-400">{{ product.category.name }}</p>
+          <h2 class="text-lg font-medium text-slate-800 hover:text-emerald-600 line-clamp-2">
+            <a [routerLink]="['/details', product.slug, product._id]">{{ product.title }}</a>
+          </h2>
+          <p class="text-xs text-gray-500 my-2"><i class="fas fa-star text-yellow-400" aria-hidden="true"></i> {{ product.ratingsAverage }} ({{ product.ratingsQuantity }})</p>
+          @if (product.priceAfterDiscount != null && product.priceAfterDiscount < product.price) {
+            <del class="text-xs text-gray-400 mr-2">{{ product.price | currency:'GBP' }}</del>
+            <span class="text-lg font-medium text-slate-900">{{ product.priceAfterDiscount | currency:'GBP' }}</span>
+          } @else {
+            <span class="text-lg font-medium text-slate-900">{{ product.price | currency:'GBP' }}</span>
+          }
+          <button type="button" (click)="deleteProductFromWishlist(product._id)" [disabled]="!!removingProductId()" [attr.aria-busy]="removingProductId() === product._id" class="w-full mt-4 rounded-lg border border-rose-200 px-3 py-2 text-rose-600 hover:bg-rose-50 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
+            {{ removingProductId() === product._id ? 'Removing...' : 'Remove from Wishlist' }}
+          </button>
+        </article>
+      } @empty {
+        <div class="col-span-full py-12 text-center text-gray-500">
+          <p>Your wishlist is empty.</p>
+          <a routerLink="/products" class="inline-block mt-4 text-emerald-600 underline">Browse products</a>
+        </div>
+      }
+    </div>
+  }
+</section>

@@ -1,0 +1,232 @@
+<section
+  class="grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16 flex flex-col lg:flex-row gap-12 lg:gap-20"
+>
+  <!-- !---------------------------------- Left Side  !---------------------------------- -->
+  <div class="w-full lg:w-1/2 space-y-10">
+    <h1 class="text-4xl font-bold text-slate-800 tracking-tight mb-4">
+      Welcome to <span class="text-green-600">FreshCart</span>
+    </h1>
+    <p class="text-lg text-gray-600 leading-relaxed max-w-lg">
+      Join thousands of happy customers who enjoy fresh groceries delivered right to their doorstep.
+    </p>
+
+    <ul class="space-y-6">
+      <li class="flex items-start gap-4">
+        <div class="size-12 rounded-full bg-green-100 text-green-600 grid place-items-center shrink-0">
+          <i class="fa-solid fa-star text-lg" aria-hidden="true"></i>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-gray-800">Premium Quality</h3>
+          <p class="text-sm text-gray-600 mt-1">
+            Premium quality products sourced from trusted suppliers.
+          </p>
+        </div>
+      </li>
+      <li class="flex items-start gap-4">
+        <div class="size-12 rounded-full bg-green-100 text-green-600 grid place-items-center shrink-0">
+          <i class="fa-solid fa-truck-fast text-lg" aria-hidden="true"></i>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-gray-800">Fast Delivery</h3>
+          <p class="text-sm text-gray-600 mt-1">Same-day delivery available in most areas</p>
+        </div>
+      </li>
+      <li class="flex items-start gap-4">
+        <div class="size-12 rounded-full bg-green-100 text-green-600 grid place-items-center shrink-0">
+          <i class="fa-solid fa-shield-halved text-lg" aria-hidden="true"></i>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-gray-800">Secure Shopping</h3>
+          <p class="text-sm text-gray-600 mt-1">Your data and payments are completely secure</p>
+        </div>
+      </li>
+    </ul>
+
+    <figure class="bg-white rounded-xl border border-gray-100 shadow-sm p-6 relative">
+      <figcaption class="flex items-center gap-3 mb-3">
+        <img
+          src="https://i.pravatar.cc/150?img=47"
+          alt="Portrait of Sarah Johnson"
+          class="size-10 rounded-full object-cover"
+        />
+        <div>
+          <h4 class="text-sm font-semibold text-gray-800">Sarah Johnson</h4>
+          <div class="text-yellow-400 text-xs flex gap-0.5" aria-label="5 out of 5 stars">
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+          </div>
+        </div>
+      </figcaption>
+      <blockquote class="text-sm text-gray-600 italic leading-relaxed">
+        "FreshCart has transformed my shopping experience. The quality of the products is
+        outstanding, and the delivery is always on time. Highly recommend!"
+      </blockquote>
+    </figure>
+  </div>
+
+  <!-- !---------------------------------- Right Side  !---------------------------------- -->
+  <div
+    class="w-full lg:w-1/2 max-w-lg mx-auto lg:mx-0 bg-white rounded-2xl shadow-xl shadow-black/5 border border-gray-100 p-8 sm:p-10"
+  >
+    <div class="text-center mb-8">
+      <h2 class="text-2xl font-bold text-slate-800">Create Your Account</h2>
+      <p class="text-sm text-gray-500 mt-2">Start your fresh journey with us today</p>
+    </div>
+
+    <form class="space-y-4" [formGroup]="registerForm" (ngSubmit)="submitForm()">
+      
+      <!-- Name Field -->
+      <div>
+        @let nameControle = registerForm.get('name');  
+        <label for="fullName" class="block text-sm text-gray-600 mb-1.5">Name*</label>
+        
+        <input
+          id="fullName"
+          formControlName="name"
+          type="text"
+          autocomplete="name"
+          placeholder="Ali"
+          class="w-full px-4 py-2.5 rounded-lg border border-gray-200 outline-none focus:ring-1 focus:ring-green-600 focus:border-green-600 text-sm text-gray-800 placeholder:text-gray-400 transition"
+        />
+
+        @if (nameControle?.invalid && nameControle?.touched) {
+          <div class="mt-1.5 bg-red-50 border border-red-200 text-red-600 text-xs rounded-lg p-2.5 flex items-center gap-2">
+            <span class="size-1.5 rounded-full bg-red-600 inline-block shrink-0"></span>
+            <div>
+              @if (nameControle?.hasError('required')) {
+                <span>Full name is required.</span>
+              } @else if (nameControle?.hasError('minlength')) {
+                <span>Name must be at least 3 characters.</span>
+              }
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Email Field -->
+      <div>
+        @let emailControle = registerForm.get('email');  
+        <label for="email" class="block text-sm text-gray-600 mb-1.5">Email*</label>
+        <input
+          id="email"
+          formControlName="email"
+          type="email"
+          autocomplete="email"
+          placeholder="ali@example.com"
+          class="w-full px-4 py-2.5 rounded-lg border border-gray-200 outline-none focus:ring-1 focus:ring-green-600 focus:border-green-600 text-sm text-gray-800 placeholder:text-gray-400 transition"
+        />
+
+        @if (emailControle?.invalid && emailControle?.touched) {
+          <div class="mt-1.5 bg-red-50 border border-red-200 text-red-600 text-xs rounded-lg p-2.5 flex items-center gap-2">
+            <span class="size-1.5 rounded-full bg-red-600 inline-block shrink-0"></span>
+            <div>
+              @if (emailControle?.hasError('required')) {
+                <span>Email is required.</span>
+              } @else if (emailControle?.hasError('email')) {
+                <span>Please enter a valid email address.</span> 
+              }
+            </div>
+          </div>
+        }
+      </div>
+      
+      <!-- Password Field -->
+      <div>
+        @let passwordControle = registerForm.get('password');
+        <label for="password" class="block text-sm text-gray-600 mb-1.5">Password*</label>
+        <input
+          id="password"
+          formControlName="password"
+          type="password"
+          autocomplete="new-password"
+          placeholder="create a strong password"
+          class="w-full px-4 py-2.5 rounded-lg border border-gray-200 outline-none focus:ring-1 focus:ring-green-600 focus:border-green-600 text-sm text-gray-800 placeholder:text-gray-400 transition"
+        />
+
+        @if (passwordControle?.invalid && passwordControle?.touched) {
+          <div class="mt-1.5 bg-red-50 border border-red-200 text-red-600 text-xs rounded-lg p-2.5 flex items-center gap-2">
+            <span class="size-1.5 rounded-full bg-red-600 inline-block shrink-0"></span>
+            <div>
+              @if (passwordControle?.hasError('required')) {
+                <span>Password is required.</span>
+              } @else if (passwordControle?.hasError('pattern')) {
+                <span>Password must include uppercase, lowercase, number, and special character.</span>
+              }
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Confirm Password Field -->
+      <div>
+        @let rePasswordControle = registerForm.get('rePassword');
+        <label for="confirmPassword" class="block text-sm text-gray-600 mb-1.5">Confirm Password*</label>
+        <input
+          id="confirmPassword"
+          formControlName="rePassword"
+          type="password"
+          autocomplete="new-password"
+          placeholder="confirm your password"
+          class="w-full px-4 py-2.5 rounded-lg border border-gray-200 outline-none focus:ring-1 focus:ring-green-600 focus:border-green-600 text-sm text-gray-800 placeholder:text-gray-400 transition"
+        />
+
+        @if (rePasswordControle?.invalid && rePasswordControle?.touched) {
+          <div class="mt-1.5 bg-red-50 border border-red-200 text-red-600 text-xs rounded-lg p-2.5 flex items-center gap-2">
+            <span class="size-1.5 rounded-full bg-red-600 inline-block shrink-0"></span>
+            <div>
+              @if (rePasswordControle?.hasError('required')) {
+                <span>Please confirm your password.</span>
+              } @else if (rePasswordControle?.hasError('mismatch')) {
+                <span>Passwords do not match.</span>
+              }
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Phone Field -->
+      <div>
+        @let phoneControle = registerForm.get('phone');
+        <label for="phone" class="block text-sm text-gray-600 mb-1.5">Phone Number*</label>
+        <input
+          id="phone"
+          formControlName="phone"
+          type="tel"
+          autocomplete="tel"
+          placeholder="+20 123 456 7890"
+          class="w-full px-4 py-2.5 rounded-lg border border-gray-200 outline-none focus:ring-1 focus:ring-green-600 focus:border-green-600 text-sm text-gray-800 placeholder:text-gray-400 transition"
+        />
+
+        @if (phoneControle?.invalid && phoneControle?.touched) {
+          <div class="mt-1.5 bg-red-50 border border-red-200 text-red-600 text-xs rounded-lg p-2.5 flex items-center gap-2">
+            <span class="size-1.5 rounded-full bg-red-600 inline-block shrink-0"></span>
+            <div>
+              @if (phoneControle?.hasError('required')) {
+                <span>Phone is required.</span>
+              } @else if (phoneControle?.hasError('pattern')) {
+                <span>Please enter a valid phone number.</span> 
+              }
+            </div>
+          </div>
+        }
+      </div>
+
+      <div class="pt-2">
+        <button
+          type="submit"
+          class="w-full cursor-pointer bg-green-600 hover:bg-green-700 text-white font-medium py-3 rounded-lg transition duration-200 flex items-center justify-center gap-2"
+        >
+          <i class="fa-solid fa-user-plus"></i> Create My Account
+        </button>
+      </div>
+    </form>
+
+    <p class="text-center text-sm text-gray-600 mt-8">
+      Already have an account?
+      <a routerLink="/login" class="text-green-600 font-medium hover:underline">Sign In</a>
+    </p>
+  </div>
+</section>

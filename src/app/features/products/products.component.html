@@ -1,0 +1,74 @@
+<div class="min-h-screen bg-gray-50/50">
+  @if (brandData(); as brand) {
+    <section class="bg-gradient-to-r from-emerald-700 to-emerald-500 text-white">
+      <div class="container mx-auto px-4 py-10">
+        <nav aria-label="Breadcrumb" class="flex flex-wrap gap-2 mb-6 text-sm">
+          <a routerLink="/">Home</a><span>/</span><a routerLink="/brands">Brands</a><span>/</span><span aria-current="page">{{ brand.name }}</span>
+        </nav>
+        <div class="flex items-center gap-5">
+          <img [src]="brand.image" [alt]="brand.name" class="w-24 h-24 sm:w-32 sm:h-32 rounded-2xl bg-white p-3 object-contain" />
+          <div><h1 class="text-3xl sm:text-4xl font-bold">{{ brand.name }}</h1><p class="mt-2 text-white/80">Shop {{ brand.name }} products</p></div>
+        </div>
+      </div>
+    </section>
+  }
+  <section class="container mx-auto px-4 py-10" [attr.aria-busy]="isLoading()">
+    @if (brandId()) {
+      <div class="flex flex-wrap items-center gap-3 mb-6 rounded-xl bg-white border border-gray-100 p-4">
+        <span class="font-medium text-gray-700">Active Filters:</span>
+        <span class="inline-flex items-center gap-2 rounded-full bg-emerald-50 text-emerald-700 px-3 py-1">
+          {{ brandData()?.name || 'Selected brand' }}
+          <button type="button" (click)="clearBrandFilter()" aria-label="Remove brand filter" class="cursor-pointer px-1">&times;</button>
+        </span>
+        <button type="button" (click)="clearBrandFilter()" class="cursor-pointer text-emerald-700 underline">Clear all</button>
+      </div>
+    } @else {
+      <h1 class="text-3xl font-bold text-gray-900 mb-6">All Products</h1>
+    }
+    @if (isLoading()) {
+      <p role="status" class="py-12 text-center text-gray-500">Loading products...</p>
+    } @else if (errorMessage()) {
+      <p role="alert" class="rounded-xl bg-red-50 p-6 text-red-700">{{ errorMessage() }}</p>
+    } @else {
+      <p role="status" class="text-gray-500 mb-5">Showing {{ productsList().length }} products</p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+        @for (product of productsList(); track product._id) {
+          <article class="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm hover:shadow-md transition-shadow duration-300 group font-sans">
+            <div class="relative overflow-hidden mb-4">
+              <a [routerLink]="['/details', product.slug, product._id]">
+                <img [src]="product.imageCover" [alt]="product.title" class="w-full aspect-square object-contain" loading="lazy" />
+              </a>
+              @if (product.priceAfterDiscount != null && product.priceAfterDiscount < product.price) {
+                <span class="absolute top-2 left-2 rounded-lg bg-emerald-600 px-2 py-1 text-xs font-medium text-white">Sale</span>
+              }
+              <a [routerLink]="['/details', product.slug, product._id]" [attr.aria-label]="'View ' + product.title" class="absolute top-2 right-2 w-10 h-10 bg-white shadow-sm border border-gray-100 rounded-full flex items-center justify-center text-gray-600 hover:bg-emerald-600 hover:text-white">
+                <i class="far fa-eye" aria-hidden="true"></i>
+              </a>
+            </div>
+            <div class="space-y-1">
+              <p class="text-xs text-gray-400 tracking-wide">{{ product.category.name }}</p>
+              <h2 class="text-lg font-medium text-slate-800 hover:text-emerald-600 line-clamp-2"><a [routerLink]="['/details', product.slug, product._id]">{{ product.title }}</a></h2>
+              <div class="flex items-center gap-1 text-xs">
+                <i class="fas fa-star text-yellow-400" aria-hidden="true"></i>
+                <span class="text-gray-500">{{ product.ratingsAverage }} ({{ product.ratingsQuantity }})</span>
+              </div>
+              <div class="flex flex-wrap items-center justify-between gap-2 pt-2">
+                <div class="flex flex-col">
+                  @if (product.priceAfterDiscount != null && product.priceAfterDiscount < product.price) {
+                    <del class="text-xs text-gray-400">{{ product.price | currency:'GBP' }}</del>
+                    <span class="text-lg font-medium text-slate-900">{{ product.priceAfterDiscount | currency:'GBP' }}</span>
+                  } @else {
+                    <span class="text-lg font-medium text-slate-900">{{ product.price | currency:'GBP' }}</span>
+                  }
+                </div>
+                <button type="button" (click)="addItemToCart(product._id)" class="bg-emerald-600 cursor-pointer text-white rounded-lg px-3 py-2 hover:bg-emerald-700 transition-colors shadow-sm active:scale-95">Add to Cart</button>
+              </div>
+            </div>
+          </article>
+        } @empty {
+          <p class="col-span-full py-12 text-center text-gray-500">{{ brandId() ? 'No products for this brand.' : 'No products available.' }}</p>
+        }
+      </div>
+    }
+  </section>
+</div>

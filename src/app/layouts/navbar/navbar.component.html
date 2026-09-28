@@ -1,0 +1,869 @@
+<nav class="sticky top-0 z-40 w-full border-b border-gray-100 bg-white px-6 py-4 font-sans">
+
+  <div class="mx-auto flex max-w-8xl items-center justify-between gap-4">
+
+    <!-- ================= LOGO ================= -->
+
+    <a
+      routerLink="/"
+      class="shrink-0 cursor-pointer"
+    >
+      <img
+        src="https://freshcart.codescandy.com/assets/images/logo/freshcart-logo.svg"
+        alt="FreshCart"
+        class="h-7 md:h-8"
+      />
+    </a>
+
+
+    <!-- ================= SEARCH ================= -->
+
+    <div class="hidden grow max-w-md lg:block">
+
+      <div class="group relative">
+
+        <input
+          type="text"
+          placeholder="Search for products..."
+          class="w-full rounded-full border border-gray-200 bg-gray-50
+                 px-6 py-2 pr-12 outline-none transition-all
+                 focus:border-emerald-500 focus:ring-emerald-500"
+        />
+
+        <button
+          type="button"
+          class="absolute bottom-1 right-1 top-1 flex w-9
+                 cursor-pointer items-center justify-center
+                 rounded-full bg-emerald-600 text-white
+                 transition-colors hover:bg-emerald-700"
+        >
+          <i class="fas fa-search text-xs"></i>
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- ================= DESKTOP LINKS ================= -->
+
+    <div class="hidden items-center gap-6 md:flex">
+
+      <a
+        routerLink="/"
+        class="font-medium text-gray-700 transition-colors
+               hover:text-emerald-600"
+      >
+        Home
+      </a>
+
+      <a
+        routerLink="/shop"
+        class="font-medium text-gray-700 transition-colors
+               hover:text-emerald-600"
+      >
+        Shop
+      </a>
+
+
+      <!-- Categories Dropdown -->
+
+      <div class="group relative">
+
+        <button
+          type="button"
+          class="flex cursor-pointer items-center gap-1 py-2
+                 font-medium text-gray-700 transition-colors
+                 group-hover:text-emerald-600"
+        >
+          Categories
+
+          <i
+            class="fas fa-chevron-down text-2xs
+                   transition-transform
+                   group-hover:rotate-180"
+          ></i>
+        </button>
+
+
+        <div
+          class="invisible absolute left-0 z-50 mt-0 w-48
+                 rounded-lg border border-gray-100
+                 bg-white opacity-0 shadow-xl
+                 transition-all duration-200
+                 group-hover:visible group-hover:opacity-100"
+        >
+
+          <ul class="py-2 text-sm text-gray-700">
+
+            <li>
+              <a
+                routerLink="/categories"
+                class="block px-4 py-2
+                       hover:bg-emerald-50
+                       hover:text-emerald-600"
+              >
+                All Categories
+              </a>
+            </li>
+
+            <li>
+              <a
+                class="block cursor-pointer px-4 py-2
+                       hover:bg-emerald-50
+                       hover:text-emerald-600"
+              >
+                Electronics
+              </a>
+            </li>
+
+          </ul>
+
+        </div>
+
+      </div>
+
+
+      <a
+        routerLink="/brands"
+        class="font-medium text-gray-700 transition-colors
+               hover:text-emerald-600"
+      >
+        Brands
+      </a>
+
+    </div>
+
+
+    <!-- ================= ICONS ================= -->
+
+    <div class="flex items-center gap-2 md:gap-4">
+
+
+      <!-- Mobile Search -->
+
+      <button
+        type="button"
+        class="flex h-10 w-10 cursor-pointer
+               items-center justify-center rounded-full
+               text-gray-600 transition-all
+               hover:bg-gray-100 lg:hidden"
+      >
+        <i class="fas fa-search text-lg"></i>
+      </button>
+
+
+      <!-- ================= WISHLIST ================= -->
+
+      <a
+        routerLink="/wishlist"
+        class="relative flex h-10 w-10 items-center justify-center
+               rounded-full text-gray-600 transition-all
+               hover:bg-gray-100 hover:text-emerald-600"
+      >
+
+        <i class="far fa-heart text-xl"></i>
+
+        @if (wishlistService.wishlistCount() > 0) {
+
+          <span
+            aria-live="polite"
+            class="absolute right-1 top-1 rounded-full
+                   border-2 border-white bg-emerald-600
+                   px-1.5 text-2xs font-bold text-white"
+          >
+            {{ wishlistService.wishlistCount() }}
+          </span>
+
+        }
+
+      </a>
+
+
+      <!-- ================= CART ================= -->
+
+      <a
+        routerLink="/cart"
+        class="relative flex h-10 w-10 items-center justify-center
+               rounded-full text-gray-600 transition-all
+               hover:bg-gray-100 hover:text-emerald-600"
+      >
+
+        <i class="fas fa-shopping-cart text-xl"></i>
+
+        @if (cartService.cartCount() > 0) {
+
+          <span
+            aria-live="polite"
+            class="absolute right-1 top-1 rounded-full
+                   border-2 border-white bg-emerald-600
+                   px-1.5 text-2xs font-bold text-white"
+          >
+            {{ cartService.cartCount() }}
+          </span>
+
+        }
+
+      </a>
+
+
+      <!-- ================= DESKTOP AUTH ================= -->
+
+      <div
+        class="hidden items-center gap-4 pl-2
+               sm:flex md:border-l md:border-gray-200 md:pl-4"
+      >
+
+        @if (logged()) {
+
+          <!-- ================= PROFILE DROPDOWN ================= -->
+
+          <div class="relative">
+
+            <!-- Profile Button -->
+
+            <button
+              type="button"
+              (click)="toggleProfileMenu()"
+              class="flex h-10 w-10 cursor-pointer
+                     items-center justify-center
+                     rounded-full text-gray-600
+                     transition-all
+                     hover:bg-emerald-50
+                     hover:text-emerald-600"
+              aria-label="Open profile menu"
+              [attr.aria-expanded]="profileMenuOpen()"
+            >
+              <i class="far fa-circle-user text-2xl"></i>
+            </button>
+
+
+            <!-- Dropdown -->
+
+            @if (profileMenuOpen()) {
+
+              <div
+                class="absolute right-0 top-full z-[100]
+                       mt-3 w-80 overflow-hidden
+                       rounded-2xl border border-gray-100
+                       bg-white shadow-xl"
+              >
+
+                <!-- User Header -->
+
+                <div
+                  class="flex items-center gap-4
+                         border-b border-gray-100
+                         px-5 py-5"
+                >
+
+                  <div
+                    class="flex h-12 w-12 shrink-0
+                           items-center justify-center
+                           rounded-full bg-emerald-50
+                           text-emerald-600"
+                  >
+                    <i class="far fa-circle-user text-2xl"></i>
+                  </div>
+
+
+                  <div class="min-w-0">
+
+                    <h3 class="truncate font-bold text-slate-800">
+                      {{ userName() }}
+                    </h3>
+
+                    @if (userData()?.email) {
+
+                      <p class="mt-1 truncate text-xs text-gray-400">
+                        {{ userData()?.email }}
+                      </p>
+
+                    }
+
+                  </div>
+
+                </div>
+
+
+                <!-- ================= MENU ITEMS ================= -->
+
+                <div class="py-3">
+
+
+                  <!-- My Profile -->
+
+                  <button
+                    type="button"
+                    (click)="closeProfileMenu()"
+                    class="flex w-full cursor-pointer
+                           items-center gap-4
+                           px-6 py-3.5 text-left
+                           text-gray-600 transition-colors
+                           hover:bg-gray-50
+                           hover:text-emerald-600"
+                  >
+
+                    <i
+                      class="far fa-user w-5
+                             text-center text-lg
+                             text-gray-400"
+                    ></i>
+
+                    <span class="font-medium">
+                      My Profile
+                    </span>
+
+                  </button>
+
+
+                  <!-- My Orders -->
+
+                  <a
+                    routerLink="/orders"
+                    (click)="closeProfileMenu()"
+                    class="flex items-center gap-4
+                           px-6 py-3.5
+                           text-gray-600 transition-colors
+                           hover:bg-gray-50
+                           hover:text-emerald-600"
+                  >
+
+                    <i
+                      class="fas fa-box-open w-5
+                             text-center text-lg
+                             text-gray-400"
+                    ></i>
+
+                    <span class="font-medium">
+                      My Orders
+                    </span>
+
+                  </a>
+
+
+                  <!-- My Wishlist -->
+
+                  <a
+                    routerLink="/wishlist"
+                    (click)="closeProfileMenu()"
+                    class="flex items-center gap-4
+                           px-6 py-3.5
+                           text-gray-600 transition-colors
+                           hover:bg-gray-50
+                           hover:text-emerald-600"
+                  >
+
+                    <i
+                      class="far fa-heart w-5
+                             text-center text-lg
+                             text-gray-400"
+                    ></i>
+
+                    <span class="font-medium">
+                      My Wishlist
+                    </span>
+
+                  </a>
+
+
+                  <!-- Addresses -->
+
+                  <button
+                    type="button"
+                    (click)="closeProfileMenu()"
+                    class="flex w-full cursor-pointer
+                           items-center gap-4
+                           px-6 py-3.5 text-left
+                           text-gray-600 transition-colors
+                           hover:bg-gray-50
+                           hover:text-emerald-600"
+                  >
+
+                    <i
+                      class="far fa-address-card w-5
+                             text-center text-lg
+                             text-gray-400"
+                    ></i>
+
+                    <span class="font-medium">
+                      Addresses
+                    </span>
+
+                  </button>
+
+
+                  <!-- Change Password -->
+
+                  <a
+                    routerLink="/change-password"
+                    (click)="closeProfileMenu()"
+                    class="flex items-center gap-4
+                           px-6 py-3.5
+                           text-gray-600 transition-colors
+                           hover:bg-gray-50
+                           hover:text-emerald-600"
+                  >
+
+                    <i
+                      class="fas fa-lock w-5
+                             text-center text-lg
+                             text-gray-400"
+                    ></i>
+
+                    <span class="font-medium">
+                      Change Password
+                    </span>
+
+                  </a>
+
+                </div>
+
+
+                <!-- ================= SIGN OUT ================= -->
+
+                <div class="border-t border-gray-100">
+
+                  <button
+                    type="button"
+                    (click)="logOut()"
+                    class="flex w-full cursor-pointer
+                           items-center gap-4
+                           px-6 py-4 text-left
+                           font-medium text-red-500
+                           transition-colors
+                           hover:bg-red-50"
+                  >
+
+                    <i
+                      class="fa-solid fa-arrow-right-from-bracket
+                             w-5 text-center text-lg"
+                    ></i>
+
+                    <span>
+                      Sign Out
+                    </span>
+
+                  </button>
+
+                </div>
+
+              </div>
+
+            }
+
+          </div>
+
+        } @else {
+
+          <!-- Sign In -->
+
+          <a
+            routerLink="/login"
+            class="flex items-center gap-2
+                   font-medium text-gray-700
+                   transition-colors
+                   hover:text-emerald-600"
+          >
+            <i class="far fa-user text-lg"></i>
+
+            Sign In
+          </a>
+
+
+          <!-- Sign Up -->
+
+          <a
+            routerLink="/register"
+            class="flex items-center gap-2
+                   font-medium text-gray-700
+                   transition-colors
+                   hover:text-emerald-600"
+          >
+            <i class="fas fa-user-plus text-lg"></i>
+
+            Sign Up
+          </a>
+
+        }
+
+      </div>
+
+
+      <!-- ================= MOBILE DRAWER BUTTON ================= -->
+
+      <button
+        type="button"
+        data-drawer-target="drawer-right"
+        data-drawer-show="drawer-right"
+        data-drawer-placement="right"
+        class="cursor-pointer p-2 text-gray-600
+               transition-colors hover:text-emerald-600
+               focus:outline-none md:hidden"
+      >
+        <i class="fas fa-bars text-2xl"></i>
+      </button>
+
+    </div>
+
+  </div>
+
+</nav>
+
+
+<!-- =========================================================
+     MOBILE DRAWER
+========================================================= -->
+
+<div
+  id="drawer-right"
+  class="fixed right-0 top-0 z-50 h-screen w-80
+         translate-x-full overflow-y-auto
+         bg-white p-6 shadow-2xl transition-transform"
+  tabindex="-1"
+>
+
+  <!-- ================= LOGO ================= -->
+
+  <div class="mb-8 flex items-center justify-between">
+
+    <img
+      routerLink="/"
+      src="https://freshcart.codescandy.com/assets/images/logo/freshcart-logo.svg"
+      alt="Logo"
+      class="h-7 cursor-pointer"
+    />
+
+    <button
+      type="button"
+      data-drawer-hide="drawer-right"
+      class="cursor-pointer rounded-full
+             bg-gray-100 p-2
+             text-gray-400
+             hover:bg-gray-200"
+    >
+      <i class="fas fa-times"></i>
+    </button>
+
+  </div>
+
+
+  <!-- ================= SEARCH ================= -->
+
+  <div class="relative mb-8">
+
+    <input
+      type="text"
+      placeholder="Search products..."
+      class="w-full rounded-lg
+             border border-gray-200
+             bg-gray-50
+             px-4 py-2.5
+             text-sm outline-none
+             focus:border-emerald-500
+             focus:ring-emerald-500"
+    />
+
+    <button
+      type="button"
+      class="absolute right-3 top-2.5
+             cursor-pointer text-emerald-600"
+    >
+      <i class="fas fa-search"></i>
+    </button>
+
+  </div>
+
+
+  <!-- ================= MOBILE LINKS ================= -->
+
+  <nav class="mb-1 border-b border-gray-100 pb-2">
+
+    <ul class="space-y-5 font-medium text-gray-800">
+
+      <li>
+        <a
+          routerLink="/"
+          class="block transition-colors hover:text-emerald-600"
+        >
+          Home
+        </a>
+      </li>
+
+      <li>
+        <a
+          routerLink="/shop"
+          class="block transition-colors hover:text-emerald-600"
+        >
+          Shop
+        </a>
+      </li>
+
+      <li>
+        <a
+          routerLink="/categories"
+          class="block transition-colors hover:text-emerald-600"
+        >
+          Categories
+        </a>
+      </li>
+
+      <li>
+        <a
+          routerLink="/brands"
+          class="block transition-colors hover:text-emerald-600"
+        >
+          Brands
+        </a>
+      </li>
+
+    </ul>
+
+  </nav>
+
+
+  <!-- ================= CART / WISHLIST ================= -->
+
+  <div class="mb-2 space-y-2">
+
+    <a
+      routerLink="/wishlist"
+      class="group flex cursor-pointer
+             items-center gap-3
+             rounded-xl p-2
+             transition-colors hover:bg-gray-50"
+    >
+
+      <div
+        class="relative flex h-11 w-11
+               items-center justify-center
+               rounded-full bg-red-50
+               text-red-500"
+      >
+
+        <i class="far fa-heart text-lg"></i>
+
+        @if (wishlistService.wishlistCount() > 0) {
+
+          <span
+            class="absolute -right-1 -top-1
+                   rounded-full bg-emerald-600
+                   px-1.5 text-2xs
+                   font-bold text-white"
+          >
+            {{ wishlistService.wishlistCount() }}
+          </span>
+
+        }
+
+      </div>
+
+
+      <span
+        class="font-medium text-gray-700
+               group-hover:text-red-600"
+      >
+        My Wishlist
+      </span>
+
+    </a>
+
+
+    <a
+      routerLink="/cart"
+      class="group flex cursor-pointer
+             items-center gap-3
+             rounded-xl p-2
+             transition-colors hover:bg-gray-50"
+    >
+
+      <div
+        class="relative flex h-11 w-11
+               items-center justify-center
+               rounded-full bg-emerald-50
+               text-emerald-600"
+      >
+
+        <i class="fas fa-shopping-cart text-lg"></i>
+
+        @if (cartService.cartCount() > 0) {
+
+          <span
+            class="absolute -right-1 -top-1
+                   rounded-full bg-emerald-600
+                   px-1.5 text-2xs
+                   font-bold text-white"
+          >
+            {{ cartService.cartCount() }}
+          </span>
+
+        }
+
+      </div>
+
+
+      <span
+        class="font-medium text-gray-700
+               group-hover:text-emerald-600"
+      >
+        My Cart
+      </span>
+
+    </a>
+
+  </div>
+
+
+  <!-- ================= MOBILE AUTH ================= -->
+
+  <div class="space-y-2 border-t border-gray-100 pt-3">
+
+    @if (logged()) {
+
+      <!-- My Orders -->
+
+      <a
+        routerLink="/orders"
+        class="group flex items-center gap-3
+               rounded-xl p-2
+               transition-colors
+               hover:bg-emerald-50"
+      >
+
+        <div
+          class="flex h-11 w-11
+                 items-center justify-center
+                 rounded-full bg-gray-100
+                 text-gray-600
+                 group-hover:bg-emerald-100
+                 group-hover:text-emerald-600"
+        >
+          <i class="fas fa-box-open"></i>
+        </div>
+
+        <span class="font-bold text-gray-700">
+          My Orders
+        </span>
+
+      </a>
+
+
+      <!-- Change Password -->
+
+      <a
+        routerLink="/change-password"
+        class="group flex items-center gap-3
+               rounded-xl p-2
+               transition-colors
+               hover:bg-emerald-50"
+      >
+
+        <div
+          class="flex h-11 w-11
+                 items-center justify-center
+                 rounded-full bg-gray-100
+                 text-gray-600
+                 group-hover:bg-emerald-100
+                 group-hover:text-emerald-600"
+        >
+          <i class="fas fa-lock"></i>
+        </div>
+
+        <span class="font-bold text-gray-700">
+          Change Password
+        </span>
+
+      </a>
+
+
+      <!-- Logout -->
+
+      <button
+        type="button"
+        (click)="logOut()"
+        class="group flex w-full
+               cursor-pointer items-center
+               gap-3 rounded-xl p-2
+               text-left transition-colors
+               hover:bg-red-50"
+      >
+
+        <div
+          class="flex h-11 w-11
+                 items-center justify-center
+                 rounded-full bg-red-50
+                 text-red-500"
+        >
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        </div>
+
+        <span class="font-bold text-red-500">
+          Sign Out
+        </span>
+
+      </button>
+
+    } @else {
+
+      <!-- Sign In -->
+
+      <a
+        routerLink="/login"
+        class="group flex cursor-pointer
+               items-center gap-3
+               rounded-xl p-2
+               transition-colors
+               hover:bg-emerald-50"
+      >
+
+        <div
+          class="flex h-11 w-11
+                 items-center justify-center
+                 rounded-full bg-gray-100
+                 text-gray-600
+                 group-hover:bg-emerald-100
+                 group-hover:text-emerald-600"
+        >
+          <i class="far fa-user text-lg"></i>
+        </div>
+
+        <span class="font-bold text-gray-700">
+          Sign In
+        </span>
+
+      </a>
+
+
+      <!-- Sign Up -->
+
+      <a
+        routerLink="/register"
+        class="group flex cursor-pointer
+               items-center gap-3
+               rounded-xl p-2
+               transition-colors
+               hover:bg-emerald-50"
+      >
+
+        <div
+          class="flex h-11 w-11
+                 items-center justify-center
+                 rounded-full bg-gray-100
+                 text-gray-600
+                 group-hover:bg-emerald-100
+                 group-hover:text-emerald-600"
+        >
+          <i class="fas fa-user-plus text-lg"></i>
+        </div>
+
+        <span class="font-bold text-gray-700">
+          Sign Up
+        </span>
+
+      </a>
+
+    }
+
+  </div>
+
+</div>

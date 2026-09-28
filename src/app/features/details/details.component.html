@@ -1,0 +1,104 @@
+<!-- product details  -->
+@if (productData()) {
+  <section class="p-4 md:p-8">
+    <div class="container max-w-6xl mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] gap-12">
+        <div class="space-y-4">
+          <div class="bg-gray-50 rounded-2xl overflow-hidden border border-gray-100 shadow-sm">
+            <img
+              [src]="productData().imageCover"
+              [alt]="productData().title"
+              [title]="productData().title"
+              class="w-full object-cover"
+            />
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-6">
+          <div class="space-y-3">
+            <div class="flex gap-2">
+              @if (productData().category) {
+                <span class="bg-emerald-50 text-emerald-600 text-xs px-2.5 py-1 rounded-full font-medium">
+                  {{ productData().category?.name }}
+                </span>
+              }
+              @if (productData().brand) {
+                <span class="bg-gray-100 text-gray-600 text-xs px-2.5 py-1 rounded-full font-medium">
+                  {{ productData().brand?.name }}
+                </span>
+              }
+            </div>
+
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-900">{{ productData().title }}</h1>
+            <div class="flex items-center gap-2">
+              <div class="flex text-yellow-400 text-sm gap-0.5">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                <i class="fas fa-star"></i><i class="far fa-star text-gray-300"></i>
+              </div>
+              <span class="text-sm text-gray-500 font-medium">
+                {{ productData().ratingsAverage }} ({{ productData().ratingsQuantity }} reviews)
+              </span>
+            </div>
+
+            <p class="text-2xl font-bold text-slate-900">{{ productData().price | currency:'GBP' }}</p>
+            
+            @if(productData().quantity > 0)
+            {
+               <span class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full">
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span> In Stock
+              </span> 
+              
+            }
+            @else 
+            {
+              <span class="inline-flex items-center gap-1.5 text-xs font-bold text-rose-600 bg-rose-50 px-3 py-1 rounded-full">
+                <span class="w-2 h-2 rounded-full bg-rose-500"></span> Out of Stock
+              </span>
+            }
+          </div>
+
+          <p class="text-sm text-gray-500 leading-relaxed max-w-md">
+            {{ productData().description }}
+          </p>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+            <button
+              type="button"
+              (click)="addItemToCart()"
+              [disabled]="!productData()._id || isAddingToCart() || isAddingToWishlist()"
+              [attr.aria-busy]="isAddingToCart()"
+              [class.opacity-50]="isAddingToCart() || isAddingToWishlist()"
+              class="w-full cursor-pointer bg-emerald-600 text-white font-bold py-3.5 rounded-xl hover:bg-emerald-700 transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-100"
+            >
+              <i [class]="isInCart() ? 'fas fa-check' : 'fas fa-shopping-cart'" aria-hidden="true"></i>
+              {{ isAddingToCart() ? 'Adding...' : isInCart() ? 'In Cart' : 'Add to Cart' }}
+            </button>
+            <button
+              type="button"
+              (click)="toggleWishlist()"
+              [disabled]="!productData()._id || isAddingToWishlist() || isAddingToCart()"
+              [attr.aria-busy]="isAddingToWishlist()"
+              [class.opacity-50]="isAddingToWishlist() || isAddingToCart()"
+              [attr.aria-pressed]="isInWishlist()"
+              [class.border-red-200]="isInWishlist()"
+              [class.bg-red-50]="isInWishlist()"
+              [class.text-red-600]="isInWishlist()"
+              [class.border-gray-200]="!isInWishlist()"
+              [class.text-gray-700]="!isInWishlist()"
+              [class.hover:bg-gray-50]="!isInWishlist()"
+              [class.hover:bg-red-100]="isInWishlist()"
+              class="border cursor-pointer py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2 disabled:cursor-not-allowed"
+            >
+              <i [class]="isInWishlist() ? 'fas fa-heart' : 'far fa-heart'" aria-hidden="true"></i>
+              {{ isAddingToWishlist() ? 'Updating...' : isInWishlist() ? 'In Wishlist' : 'Add to Wishlist' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+} @else {
+  <div class="flex justify-center items-center min-h-[50vh]">
+    <p class="text-gray-500 font-medium">Loading product details...</p>
+  </div>
+}

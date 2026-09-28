@@ -1,0 +1,89 @@
+<section class="py-10">
+    <div class="container mx-auto px-4 2xl:max-w-8xl">
+        <div class="title">
+           <h2 class="relative flex items-center gap-2.5 text-2xl font-bold md:text-3xl">
+                
+                <!-- الخط الأخضر الرأسي قبل الكلمة (مطابق للصورة) -->
+                <span class="h-6 w-1 rounded-full bg-emerald-600 md:h-7"></span>
+                
+                <!-- النص بألوان متطابقة -->
+                <span class="text-gray-900">Featured</span> 
+                <span class="text-emerald-600">Products</span>
+            </h2>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 mt-4 gap-4">
+         <!-- Products will be dynamically inserted here -->
+         @for (product of productsList(); track product.id) {
+         <!-- card  -->
+          <div  class="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm hover:shadow-md transition-shadow duration-300 group font-sans">
+          <div class="relative overflow-hidden mb-4">
+            <img
+              [src]="product.imageCover"
+              [alt]="product.title"
+              [title]="product.title"
+              class="w-full h-auto object-cover"
+            />
+
+            <!--  ! ----------- Icons  Heart ! ----------- ....  -->
+            <div class="absolute top-2 right-2 flex flex-col gap-2">
+              <button
+                class="w-10 h-10 bg-white shadow-sm border border-gray-100 rounded-full flex items-center justify-center text-gray-600 hover:bg-emerald-600 hover:text-white transition-all"
+              >
+                <i class="far fa-heart"></i>
+              </button>
+
+              <button
+                class="w-10 h-10 bg-white shadow-sm border border-gray-100 rounded-full flex items-center justify-center text-gray-600 hover:bg-emerald-600 hover:text-white transition-all"
+              >
+                <i class="fas fa-sync-alt"></i>
+              </button>
+
+              <button
+                [routerLink]="['/details', product.slug, product.id]"
+                class="w-10 cursor-pointer h-10 bg-white shadow-sm border border-gray-100 rounded-full flex items-center justify-center text-gray-600 hover:bg-emerald-600 hover:text-white transition-all"
+              >
+                <i class="far fa-eye"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="space-y-1">
+            <p class="text-xs text-gray-400 tracking-wide">{{product.category.name}} </p>
+
+            <h3
+              class="text-lg font-medium text-slate-800 hover:text-emerald-600 cursor-pointer transition-colors"
+            >
+             {{ product.title }}
+            </h3>
+
+            <div class="flex items-center gap-1">
+              <div class="flex text-yellow-400 text-xs gap-0.5">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="far fa-star text-gray-300"></i>
+              </div>
+              <span class="text-xs text-gray-400 font-medium">
+                {{product.ratingsAverage}} ({{product.ratingsQuantity}})</span
+              >
+            </div>
+
+            <div class="flex items-center justify-between pt-2">
+              <div class="flex flex-col">
+                <span class="text-lg font-medium text-slate-900"> {{ product.price | currency:'GBP' }} </span>
+              </div>
+
+              <button
+              (click)="addItemToCart(product.id)"
+                class="w-10 h-10 bg-emerald-600 cursor-pointer text-white rounded-lg flex items-center justify-center hover:bg-emerald-700 transition-colors shadow-sm active:scale-95"
+              >
+                <i class="fas fa-plus"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+        </div>
+    </div>
+</section>

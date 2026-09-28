@@ -1,0 +1,127 @@
+<section class="py-10">
+    <div class="container mx-auto px-4 2xl:max-w-8xl">
+        
+        <!-- Header Section: Title on the left, View All on the right -->
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="relative flex items-center gap-2.5 text-2xl font-bold md:text-3xl">
+                <!-- الخط الأخضر الرأسي قبل الكلمة -->
+                <span class="h-6 w-1 rounded-full bg-emerald-600 md:h-7"></span>
+                
+                <!-- النص بألوان متطابقة -->
+                <span class="text-gray-900">Shop By</span> 
+                <span class="text-emerald-600">Category</span>
+            </h2>
+
+            <!-- زر View All Categories -->
+            <a routerLink="/categories" class="text-emerald-600 hover:text-emerald-700 font-medium text-sm md:text-base flex items-center gap-1 transition-colors cursor-pointer">
+                View All Categories <i class="fas fa-arrow-right text-xs"></i>
+            </a>
+        </div>
+        
+        <!-- Grid List متطابق تماماً مع قسم المنتجات (5 أعمدة في الشاشات الكبيرة) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+           @for (category of categoriesList(); track category._id) {
+             <!-- card -->
+             <div class="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm hover:shadow-md transition-all duration-300 group font-sans flex flex-col items-center text-center cursor-pointer">
+               
+               <!-- Circular Image Container -->
+               <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden mb-4 bg-gray-50 border border-gray-100 flex items-center justify-center">
+                 <img
+                   [src]="category.image"
+                   [alt]="category.name"
+                   [title]="category.name"
+                   class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                 />
+               </div>
+
+               <!-- Category Name -->
+               <div class="w-full space-y-1">
+                 <h3 class="text-base sm:text-lg font-medium text-slate-800 group-hover:text-emerald-600 transition-colors truncate">
+                   {{ category.name }}
+                 </h3>
+               </div>
+
+             </div>
+           }
+        </div>
+    <div class="grid md:grid-cols-2 gap-4 pt-8 font-sans ">
+      <div
+        class="relative overflow-hidden rounded-2xl bg-linear-to-br from-[#12a664] to-[#088a50] p-8 text-white shadow-lg"
+      >
+        <div class="absolute -right-12 -top-12 h-40 w-40 rounded-full bg-white/10 blur-[2px]"></div>
+        <div
+          class="absolute -bottom-12 -left-12 h-40 w-40 rounded-full bg-black/5 blur-[2px]"
+        ></div>
+
+        <div class="relative z-10 flex flex-col h-full">
+          <div
+            class="inline-flex w-fit items-center gap-1.5 rounded-full bg-white/20 px-3 py-1 text-sm font-medium mb-4 backdrop-blur-sm"
+          >
+            <i class="fa-solid fa-fire text-orange-400"></i> Deal of the Day
+          </div>
+
+          <h2 class="text-3xl font-bold mb-2 tracking-tight">Fresh Organic Fruits</h2>
+          <p class="text-white/90 text-sm mb-6">Get up to 40% off on selected organic fruits</p>
+
+          <div class="flex items-center gap-3 mb-8">
+            <span class="text-3xl font-extrabold tracking-tight">40% OFF</span>
+            <span class="text-sm text-white/90 mt-1">
+              Use code: <span class="font-bold text-white tracking-wide">ORGANIC40</span>
+            </span>
+          </div>
+
+          <div class="mt-auto">
+            <a
+              href="#"
+              class="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-bold text-[#088a50] transition hover:bg-gray-100 shadow-sm"
+            >
+              Shop Now
+              <i class="fa-solid fa-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="relative overflow-hidden rounded-2xl bg-linear-to-br from-[#ff8736] via-[#fe5c4e] to-[#ff2b6b] p-8 text-white shadow-lg"
+      >
+        <div class="absolute -right-12 -top-12 h-40 w-40 rounded-full bg-white/10 blur-[2px]"></div>
+        <div
+          class="absolute -bottom-12 -left-12 h-40 w-40 rounded-full bg-black/5 blur-[2px]"
+        ></div>
+
+        <div class="relative z-10 flex flex-col h-full">
+          <div
+            class="inline-flex w-fit items-center gap-1.5 rounded-full bg-white/20 px-3 py-1 text-sm font-medium mb-4 backdrop-blur-sm"
+          >
+            <i class="fa-solid fa-hand-sparkles text-yellow-300"></i> New Arrivals
+          </div>
+
+          <h2 class="text-3xl font-bold mb-2 tracking-tight">Exotic Vegetables</h2>
+          <p class="text-white/90 text-sm mb-6">
+            Discover our latest collection of premium vegetables
+          </p>
+
+          <div class="flex items-center gap-3 mb-8">
+            <span class="text-3xl font-extrabold tracking-tight">25% OFF</span>
+            <span class="text-sm text-white/90 mt-1">
+              Use code: <span class="font-bold text-white tracking-wide">FRESH25</span>
+            </span>
+          </div>
+
+          <div class="mt-auto">
+            <a
+              href="#"
+              class="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-bold text-[#f25c4e] transition hover:bg-gray-100 shadow-sm"
+            >
+              Explore Now
+              <i class="fa-solid fa-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+      </div>
+    
+ 
+</section>
