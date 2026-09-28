@@ -125,6 +125,24 @@ export const routes: Routes = [
   },
 
   {
+    path: 'addresses',
+    title: 'Freshcart | My Addresses',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/addresses/addresses.component')
+        .then(m => m.AddressesComponent)
+  },
+
+  {
+    path: 'profile',
+    title: 'Freshcart | My Profile',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/profile/profile.component')
+        .then(m => m.ProfileComponent)
+  },
+
+  {
     path: '**',
     title: 'Freshcart | Page Not Found',
     loadComponent: () =>

@@ -1,0 +1,115 @@
+<section class="min-h-[65vh] bg-gray-50 py-8 sm:py-12">
+  <div class="container grid items-start gap-8 lg:grid-cols-[260px_minmax(0,1fr)]">
+    <aside class="rounded-2xl border border-gray-200 bg-white p-5">
+      <h2 class="mb-5 text-xl font-bold text-slate-800">My Account</h2>
+      <nav aria-label="Account navigation" class="space-y-2">
+        <a routerLink="/addresses" aria-current="page" class="flex items-center gap-3 rounded-xl bg-emerald-50 p-3 font-semibold text-emerald-700">
+          <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-600 text-white"><i class="fas fa-location-dot" aria-hidden="true"></i></span>
+          My Addresses
+          <i class="fas fa-chevron-right ml-auto text-xs" aria-hidden="true"></i>
+        </a>
+        <a routerLink="/change-password" class="flex items-center gap-3 rounded-xl p-3 text-gray-600 transition-colors hover:bg-gray-50 hover:text-emerald-600">
+          <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gray-100"><i class="fas fa-lock" aria-hidden="true"></i></span>
+          Change Password
+        </a>
+      </nav>
+    </aside>
+
+    <div class="min-w-0">
+      <header class="mb-7 flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <h1 class="text-2xl font-bold text-slate-800 sm:text-3xl">My Addresses</h1>
+          <p class="mt-2 text-gray-500">Manage your saved delivery addresses</p>
+        </div>
+        <button type="button" (click)="openAddressModal()" [disabled]="isLoading() || isSubmitting() || !!deletingAddressId()" class="primary-button">
+          <i class="fas fa-plus" aria-hidden="true"></i> Add Address
+        </button>
+      </header>
+
+      @if (loadError()) {
+        <div role="alert" class="mb-5 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+          <p>{{ loadError() }}</p>
+          <button type="button" (click)="loadAddresses()" [disabled]="isLoading() || isSubmitting() || !!deletingAddressId()" class="mt-2 cursor-pointer font-semibold underline disabled:opacity-50">Retry</button>
+        </div>
+      }
+      @if (isLoading()) {
+        <div role="status" class="rounded-2xl border border-gray-200 bg-white p-16 text-center text-gray-500">
+          <i class="fas fa-spinner fa-spin mr-2" aria-hidden="true"></i> Loading addresses...
+        </div>
+      } @else if (addressesList().length) {
+        <div class="grid gap-5 sm:grid-cols-2" aria-live="polite">
+          @for (address of addressesList(); track address._id) {
+            <article class="min-w-0 rounded-2xl border border-gray-200 bg-white p-6">
+              <h2 class="mb-4 flex items-center gap-3 break-all text-lg font-bold text-slate-800">
+                <i class="fas fa-location-dot text-emerald-600" aria-hidden="true"></i>{{ address.name }}
+              </h2>
+              <p class="whitespace-pre-line break-words text-gray-600">{{ address.details }}</p>
+              <p class="mt-3 break-words text-sm text-gray-500">City: {{ address.city }}</p>
+              <p class="mt-2 text-sm text-gray-500">Phone: {{ address.phone }}</p>
+              <button type="button" (click)="removeAddress(address)" [disabled]="!!deletingAddressId() || isSubmitting()" [attr.aria-label]="'Delete ' + address.name" class="mt-5 inline-flex cursor-pointer items-center gap-2 rounded-lg bg-gray-100 px-4 py-2 text-sm font-semibold text-gray-600 hover:bg-red-50 hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-50">
+                <i [class]="deletingAddressId() === address._id ? 'fas fa-spinner fa-spin' : 'fas fa-trash-can'" aria-hidden="true"></i>
+                {{ deletingAddressId() === address._id ? 'Deleting...' : 'Delete' }}
+              </button>
+            </article>
+          }
+        </div>
+      } @else if (!loadError()) {
+      <div class="flex min-h-96 flex-col items-center justify-center rounded-2xl border border-gray-200 bg-white px-6 py-16 text-center">
+        <div class="mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-gray-100 text-gray-400">
+          <i class="fas fa-location-dot text-3xl" aria-hidden="true"></i>
+        </div>
+        <h2 class="text-xl font-bold text-slate-800">No Addresses Yet</h2>
+        <p class="mt-3 max-w-sm text-gray-500">Add your first delivery address to make checkout faster and easier.</p>
+        <button type="button" (click)="openAddressModal()" class="primary-button mt-6">
+          <i class="fas fa-plus" aria-hidden="true"></i> Add Your First Address
+        </button>
+      </div>
+      }
+    </div>
+  </div>
+</section>
+
+<dialog #addressDialog aria-labelledby="address-modal-title" class="address-dialog" (click)="closeOnBackdrop($event)" (cancel)="isSubmitting() ? $event.preventDefault() : null" (close)="onModalClosed()">
+  <div class="rounded-2xl bg-white p-6 sm:p-8">
+    <header class="mb-6 flex items-center justify-between gap-4">
+      <h2 id="address-modal-title" class="text-2xl font-bold text-slate-800">Add New Address</h2>
+      <button type="button" [disabled]="isSubmitting()" (click)="closeAddressModal()" aria-label="Close address modal" class="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 disabled:opacity-50">
+        <i class="fas fa-xmark text-xl" aria-hidden="true"></i>
+      </button>
+    </header>
+    <form [formGroup]="addressForm" (ngSubmit)="submit()" novalidate class="space-y-5">
+      <div>
+        <label for="addressName">Address Name</label>
+        <input id="addressName" formControlName="addressName" placeholder="e.g. Home, Office" autofocus required [attr.aria-invalid]="!!fieldError('addressName')" aria-describedby="addressName-error" />
+        <p id="addressName-error" class="field-error">{{ fieldError('addressName') }}</p>
+      </div>
+      <div>
+        <label for="addressDetails">Full Address</label>
+        <textarea id="addressDetails" formControlName="details" rows="3" placeholder="Street, building, apartment..." autocomplete="street-address" required [attr.aria-invalid]="!!fieldError('details')" aria-describedby="details-error"></textarea>
+        <p id="details-error" class="field-error">{{ fieldError('details') }}</p>
+      </div>
+      <div class="grid gap-5 sm:grid-cols-2">
+        <div>
+          <label for="addressPhone">Phone Number</label>
+          <input id="addressPhone" type="tel" inputmode="tel" formControlName="phone" placeholder="01xxxxxxxxx" autocomplete="tel-national" required [attr.aria-invalid]="!!fieldError('phone')" aria-describedby="phone-error" />
+          <p id="phone-error" class="field-error">{{ fieldError('phone') }}</p>
+        </div>
+        <div>
+          <label for="addressCity">City</label>
+          <input id="addressCity" formControlName="city" placeholder="Cairo" autocomplete="address-level2" required [attr.aria-invalid]="!!fieldError('city')" aria-describedby="city-error" />
+          <p id="city-error" class="field-error">{{ fieldError('city') }}</p>
+        </div>
+      </div>
+      @if (errorMessage()) {
+        <p role="alert" class="rounded-lg bg-red-50 p-3 text-sm text-red-700">{{ errorMessage() }}</p>
+      }
+      <footer class="flex flex-wrap justify-end gap-3 border-t border-gray-100 pt-5">
+        <button type="button" [disabled]="isSubmitting()" (click)="closeAddressModal()" class="cursor-pointer rounded-lg bg-gray-100 px-5 py-3 font-semibold text-gray-700 hover:bg-gray-200 disabled:opacity-50">Cancel</button>
+        <button type="submit" [disabled]="isSubmitting()" class="primary-button">
+          @if (isSubmitting()) { <i class="fas fa-spinner fa-spin" aria-hidden="true"></i> }
+          {{ isSubmitting() ? 'Adding...' : 'Add Address' }}
+        </button>
+      </footer>
+    </form>
+  </div>
+</dialog>

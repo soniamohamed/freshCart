@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
-import { environment } from '../../../../environments/environment.development';
+import { environment } from '../../../../environments/environment';
 import { Observable } from 'rxjs';
-import { CategoriesDataResponse } from '../../models/categories-data.interface';
+import { CategoriesDataResponse, CategoryDataResponse } from '../../models/categories-data.interface';
 
 @Service()
 export class CategoriesService {
@@ -12,8 +12,8 @@ export class CategoriesService {
      return this.httpClient.get<CategoriesDataResponse>(`${environment.base_url}/api/v1/categories`);
      }
      
-     getSpecificCategory(categoryId:string):Observable<any> {
-     return this.httpClient.get<any>(`${environment.base_url}/api/v1/categories/${categoryId}`);
+     getSpecificCategory(categoryId:string):Observable<CategoryDataResponse> {
+     return this.httpClient.get<CategoryDataResponse>(`${environment.base_url}/api/v1/categories/${encodeURIComponent(categoryId)}`);
      }
 
 }

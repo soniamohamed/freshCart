@@ -109,6 +109,9 @@
 
             <li>
               <a
+                [routerLink]="electronicsCategoryId() ? '/products' : '/categories'"
+                [queryParams]="electronicsCategoryId() ? { category: electronicsCategoryId() } : null"
+                queryParamsHandling="replace"
                 class="block cursor-pointer px-4 py-2
                        hover:bg-emerald-50
                        hover:text-emerald-600"
@@ -293,8 +296,8 @@
 
                   <!-- My Profile -->
 
-                  <button
-                    type="button"
+                  <a
+                    routerLink="/profile"
                     (click)="closeProfileMenu()"
                     class="flex w-full cursor-pointer
                            items-center gap-4
@@ -314,7 +317,7 @@
                       My Profile
                     </span>
 
-                  </button>
+                  </a>
 
 
                   <!-- My Orders -->
@@ -369,8 +372,8 @@
 
                   <!-- Addresses -->
 
-                  <button
-                    type="button"
+                  <a
+                    routerLink="/addresses"
                     (click)="closeProfileMenu()"
                     class="flex w-full cursor-pointer
                            items-center gap-4
@@ -390,7 +393,7 @@
                       Addresses
                     </span>
 
-                  </button>
+                  </a>
 
 
                   <!-- Change Password -->

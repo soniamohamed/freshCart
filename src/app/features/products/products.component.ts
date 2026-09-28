@@ -6,6 +6,8 @@ import { EMPTY, catchError, distinctUntilChanged, expand, forkJoin, map, of, red
 import { ToastrService } from 'ngx-toastr';
 import { ProductData } from '../../core/models/productdata.interface';
 import { BrandData } from '../../core/models/brands-data.interface';
+import { CategoriesData } from '../../core/models/categories-data.interface';
+import { CategoriesService } from '../../core/services/categories/categories.service';
 import { ProductsService } from '../../core/services/products/products.service';
 import { BrandsService } from '../../core/services/brands/brands.service';
 import { CartService } from '../../core/services/cart/cart.service';
@@ -20,6 +22,7 @@ import { AuthService } from '../../core/auth/services/auth.service';
 export class ProductsComponent implements OnInit {
   private readonly productsService=inject(ProductsService);
   private readonly brandsService=inject(BrandsService);
+  private readonly categoriesService=inject(CategoriesService);
   private readonly activatedRoute=inject(ActivatedRoute);
   private readonly router=inject(Router);
   private readonly destroyRef=inject(DestroyRef);
@@ -29,45 +32,54 @@ export class ProductsComponent implements OnInit {
   productsList:WritableSignal<ProductData[]>=signal<ProductData[]>([]);
   brandData:WritableSignal<BrandData | null>=signal<BrandData | null>(null);
   brandId=signal('');
+  categoryId=signal('');
+  categoryData=signal<CategoriesData | null>(null);
   isLoading=signal(false);
   errorMessage=signal('');
 
   ngOnInit():void {
     this.activatedRoute.queryParamMap.pipe(
-      map(params => params.get('brand')?.trim() || ''),
-      distinctUntilChanged(),
-      switchMap(brandId => {
+      map(params => ({
+        brandId: params.get('brand')?.trim() || '',
+        categoryId: params.get('category')?.trim() || '',
+      })),
+      distinctUntilChanged((previous, current) => previous.brandId === current.brandId && previous.categoryId === current.categoryId),
+      switchMap(({ brandId, categoryId }) => {
         this.brandId.set(brandId);
+        this.categoryId.set(categoryId);
         this.brandData.set(null);
+        this.categoryData.set(null);
         this.productsList.set([]);
         this.errorMessage.set('');
         this.isLoading.set(true);
         return forkJoin({
           brand: brandId ? this.brandsService.getSpecificBrand(brandId).pipe(map(res => res.data)) : of(null),
-          products: this.productsService.getAllProducts(brandId).pipe(
+          category: categoryId ? this.categoriesService.getSpecificCategory(categoryId).pipe(map(res => res.data)) : of(null),
+          products: this.productsService.getAllProducts(brandId, undefined, categoryId).pipe(
             expand(res => res.metadata.currentPage < res.metadata.numberOfPages
-              ? this.productsService.getAllProducts(brandId, res.metadata.currentPage + 1) : EMPTY),
+              ? this.productsService.getAllProducts(brandId, res.metadata.currentPage + 1, categoryId) : EMPTY),
             reduce((products, res) => [...products, ...res.data], [] as ProductData[])
           )
         }).pipe(catchError(() => {
-          this.errorMessage.set('Unable to load products or the selected brand. Please try again.');
-          return of({ brand: null, products: [] as ProductData[] });
+          this.errorMessage.set('Unable to load products or the selected filters. Please try again.');
+          return of({ brand: null, category: null, products: [] as ProductData[] });
         }));
       }),
       takeUntilDestroyed(this.destroyRef)
-    ).subscribe(({ brand, products }) => {
+    ).subscribe(({ brand, category, products }) => {
       this.brandData.set(brand);
+      this.categoryData.set(category);
       this.productsList.set(products);
       this.isLoading.set(false);
     });
   }
 
   clearBrandFilter():void {
-    this.router.navigate([], {
-      relativeTo: this.activatedRoute,
-      queryParams: { brand: null },
-      queryParamsHandling: 'merge'
-    });
+    this.router.navigate(['/products'], { queryParams: {}, queryParamsHandling: 'replace' });
+  }
+
+  clearCategoryFilter():void {
+    this.router.navigate(['/products'], { queryParams: {}, queryParamsHandling: 'replace' });
   }
 
   addItemToCart(productId:string):void {

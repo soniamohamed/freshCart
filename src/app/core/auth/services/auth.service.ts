@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Service ,WritableSignal,inject, signal} from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
-import { UserDataResponse } from '../../models/user-data.interface';
+import { ProfileUpdateRequest, ProfileUpdateResponse, ProfileUserData, parseProfileUpdateResponse, UserDataResponse } from '../../models/user-data.interface';
 import { ForgotPasswordDataResponse } from '../../models/forgot-password-data.interface';
 import { ResetPasswordDataResponse } from '../../models/reset-password-data.interface';
 import { VerifyResetCodeDataResponse } from '../../models/verify-reset-code-data.interface';
@@ -13,6 +13,14 @@ import { VerifyTokenDataResponse } from '../../models/verify-token-data.interfac
 
 @Service()
 export class AuthService {
+  readonly profileUser = signal<ProfileUserData | null>(null);
+
+  updateLoggedUserData(data: ProfileUpdateRequest): Observable<ProfileUpdateResponse> {
+    const { name, email, phone } = data;
+    return this.httpClient.put<unknown>(`${environment.base_url}/api/v1/users/updateMe`, {
+      name, email, phone,
+    }).pipe(map(parseProfileUpdateResponse));
+  }
      private readonly httpClient=inject(HttpClient);
    private readonly router=inject(Router);
    private readonly cartService=inject(CartService);
@@ -55,6 +63,7 @@ export class AuthService {
 }
   
   signOut() :void{
+    this.profileUser.set(null);
     this.cartService.resetCartCount();
     this.wishlistService.resetWishlistCount();
     // delete token && userData

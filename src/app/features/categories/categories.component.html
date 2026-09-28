@@ -94,7 +94,9 @@
           track category._id
         ) {
 
-          <article
+          <a
+            [routerLink]="['/products']"
+            [queryParams]="{ category: category._id }"
             class="group overflow-hidden rounded-xl border border-gray-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:border-emerald-400 hover:shadow-lg"
           >
 
@@ -124,7 +126,7 @@
 
             </div>
 
-          </article>
+          </a>
 
         }
 

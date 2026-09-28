@@ -1,5 +1,20 @@
 <div class="min-h-screen bg-gray-50/50">
-  @if (brandData(); as brand) {
+  @if (categoryData(); as category) {
+    <section class="bg-gradient-to-r from-emerald-700 to-emerald-500 text-white">
+      <div class="container mx-auto px-4 py-10">
+        <nav aria-label="Breadcrumb" class="mb-6 flex flex-wrap gap-2 text-sm">
+          <a routerLink="/">Home</a><span>/</span><a routerLink="/categories">Categories</a><span>/</span><span aria-current="page">{{ category.name }}</span>
+        </nav>
+        <div class="flex flex-col items-start gap-5 sm:flex-row sm:items-center">
+          <img [src]="category.image" [alt]="category.name" class="h-24 w-24 shrink-0 rounded-2xl bg-white p-3 object-contain sm:h-32 sm:w-32" />
+          <div class="min-w-0 break-words">
+            <h1 class="text-3xl font-bold sm:text-4xl">{{ category.name }}</h1>
+            <p class="mt-2 text-white/80">Browse products in {{ category.name }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  } @else if (brandData(); as brand) {
     <section class="bg-gradient-to-r from-emerald-700 to-emerald-500 text-white">
       <div class="container mx-auto px-4 py-10">
         <nav aria-label="Breadcrumb" class="flex flex-wrap gap-2 mb-6 text-sm">
@@ -13,13 +28,22 @@
     </section>
   }
   <section class="container mx-auto px-4 py-10" [attr.aria-busy]="isLoading()">
-    @if (brandId()) {
+    @if (brandId() || categoryId()) {
       <div class="flex flex-wrap items-center gap-3 mb-6 rounded-xl bg-white border border-gray-100 p-4">
         <span class="font-medium text-gray-700">Active Filters:</span>
+        @if (categoryId()) {
+          <span class="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1 text-emerald-700">
+            <i class="fas fa-layer-group" aria-hidden="true"></i>
+            {{ categoryData()?.name || 'Selected category' }}
+            <button type="button" (click)="clearCategoryFilter()" aria-label="Remove category filter" class="cursor-pointer px-1">&times;</button>
+          </span>
+        }
+        @if (brandId()) {
         <span class="inline-flex items-center gap-2 rounded-full bg-emerald-50 text-emerald-700 px-3 py-1">
           {{ brandData()?.name || 'Selected brand' }}
           <button type="button" (click)="clearBrandFilter()" aria-label="Remove brand filter" class="cursor-pointer px-1">&times;</button>
         </span>
+        }
         <button type="button" (click)="clearBrandFilter()" class="cursor-pointer text-emerald-700 underline">Clear all</button>
       </div>
     } @else {
@@ -66,7 +90,7 @@
             </div>
           </article>
         } @empty {
-          <p class="col-span-full py-12 text-center text-gray-500">{{ brandId() ? 'No products for this brand.' : 'No products available.' }}</p>
+          <p class="col-span-full py-12 text-center text-gray-500">{{ categoryId() ? 'No products for the selected filters.' : brandId() ? 'No products for this brand.' : 'No products available.' }}</p>
         }
       </div>
     }

@@ -10,9 +10,10 @@ import { ProductDetailsDataResponse } from '../../models/product-details-data.in
 export class ProductsService {
     private readonly httpClient=inject(HttpClient);
 
-getAllProducts(brandId?:string, page?:number):Observable<ProductsDataResponse> {
+getAllProducts(brandId?:string, page?:number, categoryId?:string):Observable<ProductsDataResponse> {
 const params: Record<string, string | number> = {};
 if (brandId) params['brand'] = brandId;
+if (categoryId) params['category[in]'] = categoryId;
 if (page) params['page'] = page;
 return this.httpClient.get<ProductsDataResponse>(`${environment.base_url}/api/v1/products`, { params });
 }

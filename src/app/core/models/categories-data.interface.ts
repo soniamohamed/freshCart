@@ -4,6 +4,10 @@ export interface CategoriesDataResponse {
   data: CategoriesData[]
 }
 
+export interface CategoryDataResponse {
+  data: CategoriesData;
+}
+
 export interface Metadata {
   currentPage: number
   numberOfPages: number
@@ -18,4 +22,3 @@ export interface CategoriesData {
   createdAt: string
   updatedAt: string
 }
-
