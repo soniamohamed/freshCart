@@ -1,1 +1,0 @@
-import{dt as ST,g as Dl,ht as Tl,v as Ew}from"./chunk-CqXdJEha.js";var i=class t{static ɵfac=function(e){return new(e||t)};static ɵcmp=ST({type:t,selectors:[[`app-categories`]],decls:2,vars:0,template:function(e,m){e&1&&(Dl(0,`p`),Ew(1,`categories works!`),Tl())},encapsulation:2})};export{i as CategoriesComponent};
