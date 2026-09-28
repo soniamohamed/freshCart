@@ -1,0 +1,1 @@
+import{dt as ST,g as Dl,ht as Tl,v as Ew}from"./chunk-CqXdJEha.js";var p=class o{static ɵfac=function(n){return new(n||o)};static ɵcmp=ST({type:o,selectors:[[`app-not-found`]],decls:2,vars:0,template:function(n,i){n&1&&(Dl(0,`p`),Ew(1,`not-found works!`),Tl())},encapsulation:2})};export{p as NotFoundComponent};

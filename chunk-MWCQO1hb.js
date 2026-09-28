@@ -1,0 +1,1 @@
+import{Qn as v,sn as hu,st as Re,ut as S}from"./chunk-CqXdJEha.js";function w(t){t||(t=v(Re));let i=new S(e=>{if(t.destroyed){e.next();return}return t.onDestroy(e.next.bind(e))});return e=>e.pipe(hu(i))}export{w as t};
