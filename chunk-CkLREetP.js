@@ -1,1 +1,0 @@
-var e={base_url:`https://ecommerce.routemisr.com`};export{e as t};

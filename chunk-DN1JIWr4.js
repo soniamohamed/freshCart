@@ -1,0 +1,1 @@
+import{J as Mw,_ as Cl,nt as PT,yt as Tl}from"./chunk-BQPep2sV.js";var p=class o{static ɵfac=function(n){return new(n||o)};static ɵcmp=PT({type:o,selectors:[[`app-not-found`]],decls:2,vars:0,template:function(n,i){n&1&&(Tl(0,`p`),Mw(1,`not-found works!`),Cl())},encapsulation:2})};export{p as NotFoundComponent};
